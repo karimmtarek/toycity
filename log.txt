@@ -1,0 +1,6 @@
+[34mMon Dec 21 22:26:02 2015 -0500[m [33m2307b62[32m (HEAD -> master)[m [34mReplace .map and .reduce with .inject [35m [Karim Tarek][m
+[34mMon Dec 21 22:25:21 2015 -0500[m [33ma97bce9[32m[m [34mGenerate git log with report [35m [Karim Tarek][m
+[34mMon Dec 21 21:56:56 2015 -0500[m [33m6b9a2b4[32m[m [34mAdd report.txt [35m [Karim Tarek][m
+[34mMon Dec 21 21:56:21 2015 -0500[m [33mb77bb46[32m[m [34mAdd code to generate report [35m [Karim Tarek][m
+[34mMon Dec 21 21:55:35 2015 -0500[m [33m23985fd[32m[m [34mAdd print header methods, print report to file [35m [Karim Tarek][m
+[34mMon Dec 21 15:25:04 2015 -0500[m [33mc58f6b8[32m[m [34mInitial commit [35m [Karim Tarek][m

@@ -24,4 +24,5 @@ report.products_report
   # Calculate and print the total revenue of all the brand's toy sales combined
 report.brands_report
 
+# Create git logs text file
 `git log > ../log.txt`
