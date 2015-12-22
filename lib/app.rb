@@ -23,3 +23,5 @@ report.products_report
   # Calculate and print the average price of the brand's toys
   # Calculate and print the total revenue of all the brand's toy sales combined
 report.brands_report
+
+`git log > ../log.txt`
