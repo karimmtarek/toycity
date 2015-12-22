@@ -1,39 +1,95 @@
 class ReportGenerator
-  attr_accessor :products, :brands
+  attr_accessor :products, :brands, :report_file
 
-  def initialize(raw_data)
-    @products = raw_data
+  def initialize(args = {})
+    @products = args[:raw_data] || raw_data
     @brands = brands
+    @report_file = File.new("../report.txt", "w+")
+  end
+
+  def raw_data(filename = "products.json")
+    path = File.join(File.dirname(__FILE__), "../data/#{filename}")
+    file = File.read(path)
+    JSON.parse(file)
   end
 
   def products_report
+    print_products_header
+
     products["items"].each do |product|
-      puts "\n#{product["title"]}"
-      print_line
-      puts "– Retail price: #{product["full-price"]}"
-      puts "– Total number of purchases: #{number_of_purchases(product)}"
-      puts "– Total amount of sales: $#{total_toys_sales_amount(product)}"
-      puts "– Average price/toy: $#{average_price_per_toy(product)}"
-      puts "– Average discount/toy: #{average_discount(product)}%"
-      print_line
+      open("../report.txt", "a") do |f|
+        f.puts "\n#{product["title"]}"
+        f.puts print_line
+        f.puts "– Retail price: #{product["full-price"]}"
+        f.puts "– Total number of purchases: #{number_of_purchases(product)}"
+        f.puts "– Total amount of sales: $#{total_toys_sales_amount(product)}"
+        f.puts "– Average price/toy: $#{average_price_per_toy(product)}"
+        f.puts "– Average discount/toy: #{average_discount(product)}%"
+        f.puts print_line
+      end
     end
   end
 
   def brands_report
+    print_brands_header
+
     brands_hash["brands"].each_with_index do |brand, index|
-      puts "\n#{brands[index]}"
-      print_line
-      puts "Number of toys: #{total_stock(brand[brands[index]])}"
-      puts "Average price/toy: #{brand_average_toy_price(brand[brands[index]])}"
-      puts "Total revenue: $#{brand_total_revenue(brand[brands[index]])}"
-      print_line
+      open("../report.txt", "a") do |f|
+        f.puts "\n#{brands[index]}"
+        f.puts print_line
+        f.puts "Number of toys: #{total_stock(brand[brands[index]])}"
+        f.puts "Average price/toy: #{brand_average_toy_price(brand[brands[index]])}"
+        f.puts "Total revenue: $#{brand_total_revenue(brand[brands[index]])}"
+        f.puts print_line
+      end
+    end
+  end
+
+  def print_report_header
+    open("../report.txt", "a") do |f|
+      f.puts "   _____       __             ____                        __ "
+      f.puts "  / ___/____ _/ /__  _____   / __ \\___  ____  ____  _____/ /_"
+      f.puts "  \\__ \\/ __ `/ / _ \\/ ___/  / /_/ / _ \\/ __ \\/ __ \\/ ___/ __/"
+      f.puts " ___/ / /_/ / /  __(__  )  / _, _/  __/ /_/ / /_/ / /  / /_  "
+      f.puts "/____/\\__,_/_/\\___/____/  /_/ |_|\\___/ .___/\\____/_/   \\__/  "
+      f.puts " __________________________________ /_/______________________"
+      f.puts "/_____/_____/_____/_____/_____/_____/_____/_____/_____/_____/"
+    end
+  end
+
+  def print_time_stamp
+    open("../report.txt", "a") do |f|
+      f.puts "Report generated on: #{Time.now.strftime('%a %b %e %Y')}"
+      f.puts ""
     end
   end
 
   private
 
+
+  def print_products_header
+    open("../report.txt", "a") do |f|
+      f.puts "    ____                 __           __      "
+      f.puts "   / __ \\_________  ____/ /_  _______/ /______"
+      f.puts "  / /_/ / ___/ __ \\/ __  / / / / ___/ __/ ___/"
+      f.puts " / ____/ /  / /_/ / /_/ / /_/ / /__/ /_(__  ) "
+      f.puts "/_/   /_/   \\____/\\__,_/\\__,_/\\___/\\__/____/  "
+    end
+  end
+
+  def print_brands_header
+    open("../report.txt", "a") do |f|
+      f.puts ""
+      f.puts "    ____                       __    "
+      f.puts "   / __ )_________ _____  ____/ /____"
+      f.puts "  / __  / ___/ __ `/ __ \\/ __  / ___/"
+      f.puts " / /_/ / /  / /_/ / / / / /_/ (__  ) "
+      f.puts "/_____/_/   \\__,_/_/ /_/\\__,_/____/  "
+    end
+  end
+
   def print_line
-    puts "#{"-" * 33}"
+    "—" * 33
   end
 
   def number_of_purchases(product)
