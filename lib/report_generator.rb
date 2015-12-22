@@ -1,10 +1,11 @@
 class ReportGenerator
-  attr_accessor :products, :brands, :report_file
+  attr_accessor :products, :brands
 
   def initialize(args = {})
     @products = args[:raw_data] || raw_data
     @brands = brands
-    @report_file = File.new("../report.txt", "w+")
+    report_file = args[:report_file] || "../report.txt"
+    File.new(report_file, "w+")
   end
 
   def raw_data(filename = "products.json")
@@ -59,13 +60,12 @@ class ReportGenerator
 
   def print_time_stamp
     open("../report.txt", "a") do |f|
-      f.puts "Report generated on: #{Time.now.strftime('%a %b %e %Y')}"
+      f.puts "Report generated on: #{Time.now.strftime('%c')}"
       f.puts ""
     end
   end
 
   private
-
 
   def print_products_header
     open("../report.txt", "a") do |f|
@@ -102,12 +102,11 @@ class ReportGenerator
 
   def total_toys_sales_amount(product)
     product["purchases"]
-      .map { |purchase| purchase["price"]  }
-      .reduce(:+)
+      .inject(0) { |sum, purchase| sum + purchase["price"] }
   end
 
   def average_price_per_toy(product)
-    total_toys_sales_amount(product) / product["purchases"].size
+    total_toys_sales_amount(product) / number_of_purchases(product)
   end
 
   def average_discount(product)
@@ -130,23 +129,21 @@ class ReportGenerator
   end
 
   def total_stock(brand)
-    brand
-      .map { |product| product["stock"] }
-      .reduce(:+)
+    brand.inject(0) { |sum, product| sum + product["stock"] }
   end
 
   def brand_total_purchases(brand)
     brand
       .map { |brand| brand["purchases"] }
-      .flatten.size
+      .flatten
+      .size
   end
 
   def brand_total_revenue(brand)
     brand
       .map { |brand| brand["purchases"] }
       .flatten
-      .map { |purchase| purchase["price"] }
-      .reduce(:+)
+      .inject(0) { |sum, purchase| sum + purchase["price"] }
       .round(2)
   end
 end
