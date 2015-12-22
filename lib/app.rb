@@ -1,21 +1,12 @@
 require 'json'
 require_relative "report_generator"
-path = File.join(File.dirname(__FILE__), '../data/products.json')
-file = File.read(path)
-products_hash = JSON.parse(file)
+
+report = ReportGenerator.new
+
+report.print_report_header
 
 # Print today's date
-puts "Today's date is: #{Time.now.strftime('%a %b %e %Y')}"
-
-puts "                     _            _       "
-puts "                    | |          | |      "
-puts " _ __  _ __ ___   __| |_   _  ___| |_ ___ "
-puts "| '_ \\| '__/ _ \\ / _` | | | |/ __| __/ __|"
-puts "| |_) | | | (_) | (_| | |_| | (__| |_\\__ \\"
-puts "| .__/|_|  \\___/ \\__,_|\\__,_|\\___|\\__|___/"
-puts "| |                                       "
-puts "|_|                                       "
-
+report.print_time_stamp
 
 # For each product in the data set:
   # Print the name of the toy
@@ -24,21 +15,11 @@ puts "|_|                                       "
   # Calcalate and print the total amount of sales
   # Calculate and print the average price the toy sold for
   # Calculate and print the average discount based off the average sales price
-
-report = ReportGenerator.new(products_hash)
 report.products_report
-
-	puts " _                         _     "
-	puts "| |                       | |    "
-	puts "| |__  _ __ __ _ _ __   __| |___ "
-	puts "| '_ \\| '__/ _` | '_ \\ / _` / __|"
-	puts "| |_) | | | (_| | | | | (_| \\__ \\"
-	puts "|_.__/|_|  \\__,_|_| |_|\\__,_|___/"
 
 # For each brand in the data set:
   # Print the name of the brand
   # Count and print the number of the brand's toys we stock
   # Calculate and print the average price of the brand's toys
   # Calculate and print the total revenue of all the brand's toy sales combined
-
 report.brands_report
